@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Moodle PDF Parser</title>
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="/static/style.css">
+
+  <!-- Font Awesome Icons -->
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+  />
+</head>
+<body>
+
+<div class="container">
+
+  <header class="header">
+    <i class="fa-solid fa-file-pdf pdf-icon"></i>
+    <h1>Moodle Assessment PDF Parser</h1>
+    <p>Upload Moodle PDFs and extract assessment details instantly</p>
+  </header>
+
+  <form class="upload-box" action="/upload" method="post" enctype="multipart/form-data">
+    <label class="file-label">
+      <i class="fa-solid fa-cloud-arrow-up"></i>
+      <span>Select PDF files</span>
+      <input type="file" name="files" multiple accept=".pdf" required hidden>
+    </label>
+
+    <button type="submit" class="btn-primary">
+      <i class="fa-solid fa-gear"></i> Process PDFs
+    </button>
+  </form>
+
+  {% if data %}
+  <section class="results">
+    <h2><i class="fa-solid fa-table"></i> Extracted Assignments</h2>
+
+    <table>
+      <thead>
+        <tr>
+          <th>📘 Subject</th>
+          <th>📝 Assignment</th>
+          <th>⚖️ Weight (%)</th>
+          <th>⏰ Due Date</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for row in data %}
+        <tr>
+          <td>{{ row.subject }}</td>
+          <td>{{ row.assignment }}</td>
+          <td>{{ row.weight }}</td>
+          <td>{{ row.due_date }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+
+    <a class="btn-download" href="/assignments_summary.csv" download>
+      <i class="fa-solid fa-download"></i> Download CSV
+    </a>
+  </section>
+  {% endif %}
+
+</div>
+
+<footer class="footer">
+  Built with ❤️ using FastAPI
+</footer>
+
+</body>
+</html>
+
